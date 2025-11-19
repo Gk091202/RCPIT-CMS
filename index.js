@@ -1,8 +1,10 @@
 // Enhanced College Club Management System JavaScript - Club Cards Enhanced
 // Data Management with Backend API
 
-// API Base URL
-const API_BASE_URL = "http://localhost:3000/api";
+// API Base URL - Change this after deploying to Railway
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000/api'
+  : 'https://YOUR-RAILWAY-URL.railway.app/api'; // Replace with your Railway URL
 
 // Initialize data from backend
 let eventsData = [];
