@@ -2,9 +2,10 @@
 // Data Management with Backend API
 
 // API Base URL - Change this after deploying to Railway
-const API_BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000/api'
-  : 'https://YOUR-RAILWAY-URL.railway.app/api'; // Replace with your Railway URL
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000/api"
+    : "https://rcpit-cms-production.up.railway.app/api";
 
 // Initialize data from backend
 let eventsData = [];
