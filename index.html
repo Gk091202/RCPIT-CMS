@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RCPIT Club Management System</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+      <div
+        class="login-container d-flex justify-content-center align-items-center min-vh-100"
+      >
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+              <div
+                class="login-form card shadow-lg border-0"
+                data-aos="zoom-in"
+              >
+                <div class="card-body p-5">
+                  <div class="text-center mb-4">
+                    <i
+                      class="bi bi-mortarboard-fill text-primary display-4 mb-3"
+                    ></i>
+                    <h1 class="h3 text-primary fw-bold">
+                      RCPIT College Club CMS
+                    </h1>
+                    <h2 class="h5 text-muted">Select Your Role</h2>
+                  </div>
+
+                  <!-- Role Selection Buttons -->
+                  <div id="roleSelection" class="mb-4">
+                    <div class="row g-3">
+                      <div class="col-6">
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary w-100 h-100 role-btn"
+                          id="studentRoleBtn"
+                          onclick="selectRole('student')"
+                        >
+                          <i
+                            class="bi bi-person-fill d-block mb-2"
+                            style="font-size: 2rem"
+                          ></i>
+                          <span class="fw-bold">Student Login</span>
+                        </button>
+                      </div>
+                      <div class="col-6">
+                        <button
+                          type="button"
+                          class="btn btn-outline-success w-100 h-100 role-btn"
+                          id="adminRoleBtn"
+                          onclick="selectRole('admin')"
+                        >
+                          <i
+                            class="bi bi-shield-fill-check d-block mb-2"
+                            style="font-size: 2rem"
+                          ></i>
+                          <span class="fw-bold">Admin Login</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Login Form (Initially Hidden) -->
+                  <div id="loginFormContainer" style="display: none">
+                    <div class="mb-3 text-center">
+                      <span
+                        class="badge bg-primary"
+                        id="selectedRoleBadge"
+                      ></span>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-link"
+                        onclick="backToRoleSelection()"
+                      >
+                        <i class="bi bi-arrow-left"></i> Change Role
+                      </button>
+                    </div>
+                    <form id="loginForm">
+                      <div class="mb-3">
+                        <label for="username" class="form-label">
+                          <i class="bi bi-person-fill me-2"></i>Username
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control form-control-lg"
+                          id="username"
+                          name="username"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="password" class="form-label">
+                          <i class="bi bi-lock-fill me-2"></i>Password
+                        </label>
+                        <input
+                          type="password"
+                          class="form-control form-control-lg"
+                          id="password"
+                          name="password"
+                          required
+                        />
+                      </div>
+                      <div class="d-grid">
+                        <button
+                          type="submit"
+                          class="btn btn-primary btn-lg login-btn"
+                        >
+                          <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                        </button>
+                      </div>
+                      <div
+                        class="text-center mt-3"
+                        id="signupLinkContainer"
+                        style="display: none"
+                      >
+                        <small class="text-muted">Don't have an account?</small>
+                        <button
+                          type="button"
+                          class="btn btn-link btn-sm"
+                          onclick="showSignupForm()"
+                        >
+                          Sign Up Here
+                        </button>
+                      </div>
+                    </form>
+                    <div
+                      id="errorMessage"
+                      class="alert alert-danger mt-3 d-none"
+                    ></div>
+                  </div>
+
+                  <!-- Signup Form (Initially Hidden) -->
+                  <div id="signupFormContainer" style="display: none">
+                    <div class="mb-3 text-center">
+                      <span class="badge bg-success">Create New Account</span>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-link"
+                        onclick="backToLoginForm()"
+                      >
+                        <i class="bi bi-arrow-left"></i> Back to Login
+                      </button>
+                    </div>
+                    <form id="signupForm">
+                      <div class="mb-3">
+                        <label for="signupFullName" class="form-label">
+                          <i class="bi bi-person-fill me-2"></i>Full Name
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="signupFullName"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupUsername" class="form-label">
+                          <i class="bi bi-person-badge me-2"></i>Username
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="signupUsername"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupEmail" class="form-label">
+                          <i class="bi bi-envelope me-2"></i>Email
+                        </label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="signupEmail"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupPassword" class="form-label">
+                          <i class="bi bi-lock-fill me-2"></i>Password
+                        </label>
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="signupPassword"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupRollNumber" class="form-label">
+                          <i class="bi bi-hash me-2"></i>Roll Number
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="signupRollNumber"
+                          required
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupBranch" class="form-label">
+                          <i class="bi bi-building me-2"></i>Branch
+                        </label>
+                        <select class="form-select" id="signupBranch" required>
+                          <option value="">Select Branch</option>
+                          <option value="Computer Engineering">
+                            Computer Engineering
+                          </option>
+                          <option
+                            value="Computer Science and Engineering (Data Science)"
+                          >
+                            Computer Science and Engineering (Data Science)
+                          </option>
+                          <option
+                            value="Artificial Intelligence and Data Science"
+                          >
+                            Artificial Intelligence and Data Science
+                          </option>
+                          <option
+                            value="Artificial Intelligence and Machine Learning"
+                          >
+                            Artificial Intelligence and Machine Learning
+                          </option>
+                          <option value="Information Technology">
+                            Information Technology
+                          </option>
+                          <option
+                            value="Electronics and Telecommunication Engineering"
+                          >
+                            Electronics and Telecommunication Engineering
+                          </option>
+                          <option value="Mechanical Engineering">
+                            Mechanical Engineering
+                          </option>
+                          <option value="Civil Engineering">
+                            Civil Engineering
+                          </option>
+                          <option value="Electrical Engineering">
+                            Electrical Engineering
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="signupPrnNumber" class="form-label">
+                          <i class="bi bi-card-text me-2"></i>PRN Number
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="signupPrnNumber"
+                          required
+                        />
+                      </div>
+                      <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                          <i class="bi bi-person-plus me-2"></i>Create Account
+                        </button>
+                      </div>
+                    </form>
+                    <div
+                      id="signupErrorMessage"
+                      class="alert alert-danger mt-3 d-none"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Homepage -->
+    <div id="homepage" class="page">
+      <!-- Animated Navbar -->
+      <nav
+        class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top"
+      >
+        <div class="container">
+          <a
+            class="navbar-brand fw-bold text-primary"
+            href="#"
+            data-aos="fade-right"
+          >
+            <i class="bi bi-mortarboard-fill me-2"></i>
+            RCPIT College Club Management
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item" data-aos="fade-left" data-aos-delay="100">
+                <a class="nav-link nav-link-custom" href="#events">
+                  <i class="bi bi-calendar-event me-1"></i>Events
+                </a>
+              </li>
+              <li class="nav-item" data-aos="fade-left" data-aos-delay="200">
+                <a class="nav-link nav-link-custom" href="#clubs">
+                  <i class="bi bi-people me-1"></i>Clubs
+                </a>
+              </li>
+              <li class="nav-item" data-aos="fade-left" data-aos-delay="300">
+                <a class="nav-link nav-link-custom" href="#members">
+                  <i class="bi bi-person-badge me-1"></i>Members
+                </a>
+              </li>
+              <li
+                class="nav-item ms-3"
+                data-aos="fade-left"
+                data-aos-delay="400"
+              >
+                <button id="logoutBtn" class="btn btn-outline-danger btn-sm">
+                  <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero Section with Floating Animation -->
+      <section class="hero-section">
+        <div class="container">
+          <div class="row min-vh-100 align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+              <div class="floating-element" data-aos="zoom-in">
+                <i
+                  class="bi bi-stars display-1 text-warning mb-4 floating-icon"
+                ></i>
+              </div>
+              <h1 class="display-4 fw-bold text-white mb-4" data-aos="fade-up">
+                Welcome to Club Events
+              </h1>
+              <p
+                class="lead text-white-50 mb-5"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                Stay updated with all the exciting events happening in our
+                college clubs!
+              </p>
+              <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Events Section -->
+      <section class="events-section py-5" id="events">
+        <div class="container">
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white mb-3" data-aos="fade-up">
+              <i class="bi bi-calendar-event me-3"></i>Upcoming Events
+            </h2>
+            <div
+              class="divider mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            ></div>
+          </div>
+          <div id="eventsContainer" class="row">
+            <!-- Events will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Clubs Section -->
+      <section class="clubs-section py-5" id="clubs">
+        <div class="container">
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white mb-3" data-aos="fade-up">
+              <i class="bi bi-people me-3"></i>Our Clubs
+            </h2>
+            <div
+              class="divider mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            ></div>
+            <button
+              class="btn btn-warning btn-lg mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#joinClubModal"
+            >
+              <i class="bi bi-person-plus me-2"></i>Join a Club
+            </button>
+          </div>
+          <div id="clubsContainer" class="row">
+            <!-- Clubs will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Members Section -->
+      <section class="members-section py-5" id="members">
+        <div class="container">
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-white mb-3" data-aos="fade-up">
+              <i class="bi bi-person-badge me-3"></i>Club Members
+            </h2>
+            <div
+              class="divider mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            ></div>
+          </div>
+          <div id="membersContainer" class="row">
+            <!-- Members will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="page">
+      <!-- Admin Navbar -->
+      <nav
+        class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top"
+      >
+        <div class="container">
+          <a
+            class="navbar-brand fw-bold text-warning"
+            href="#"
+            data-aos="fade-right"
+          >
+            <i class="bi bi-shield-fill-check me-2"></i>
+            Admin Dashboard - RCPIT CMS
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#adminNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="adminNavbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item">
+                <a class="nav-link" href="#adminEvents">
+                  <i class="bi bi-calendar-event me-1"></i>Events
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#adminClubs">
+                  <i class="bi bi-people me-1"></i>Clubs
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#adminForms">
+                  <i class="bi bi-file-earmark-text me-1"></i>Forms
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#adminEventRegistrations">
+                  <i class="bi bi-calendar-check me-1"></i>Event Registrations
+                </a>
+              </li>
+              <li class="nav-item ms-3">
+                <button
+                  id="adminLogoutBtn"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Admin Hero Section -->
+      <section class="admin-hero-section py-5 mt-5">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-12 text-center">
+              <h1 class="display-4 fw-bold text-white mb-3">
+                <i class="bi bi-gear-fill me-3"></i>Club Management Portal
+              </h1>
+              <p class="lead text-white-50">
+                Manage events, clubs, and member submissions
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Events Section -->
+      <section class="py-5" id="adminEvents">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-white">
+              <i class="bi bi-calendar-event me-2"></i>Manage Events
+            </h2>
+            <button class="btn btn-success" onclick="showAddEventModal()">
+              <i class="bi bi-plus-circle me-2"></i>Add New Event
+            </button>
+          </div>
+          <div id="adminEventsContainer" class="row">
+            <!-- Events will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Clubs Section -->
+      <section class="py-5" id="adminClubs">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-white">
+              <i class="bi bi-people me-2"></i>Manage Clubs
+            </h2>
+            <button class="btn btn-success" onclick="showAddClubModal()">
+              <i class="bi bi-plus-circle me-2"></i>Add New Club
+            </button>
+          </div>
+          <div id="adminClubsContainer" class="row">
+            <!-- Clubs will be populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Forms Section -->
+      <section class="py-5" id="adminForms">
+        <div class="container">
+          <h2 class="text-white mb-4">
+            <i class="bi bi-file-earmark-text me-2"></i>Club Joining Form
+            Submissions
+          </h2>
+          <div class="card bg-white">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped" id="formSubmissionsTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Roll Number</th>
+                      <th>Branch</th>
+                      <th>PRN Number</th>
+                      <th>Club</th>
+                      <th>Fee Amount</th>
+                      <th>Payment Status</th>
+                      <th>Submitted On</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="formSubmissionsBody">
+                    <!-- Form submissions will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Event Registrations Section -->
+      <section class="py-5" id="adminEventRegistrations">
+        <div class="container">
+          <h2 class="text-white mb-4">
+            <i class="bi bi-calendar-check me-2"></i>Event Registrations
+          </h2>
+          <div class="card bg-white">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped" id="eventRegistrationsTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Roll Number</th>
+                      <th>Branch</th>
+                      <th>PRN Number</th>
+                      <th>Event Name</th>
+                      <th>Event Date</th>
+                      <th>Registration Fee</th>
+                      <th>Payment Status</th>
+                      <th>Registered On</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="eventRegistrationsBody">
+                    <!-- Event registrations will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modals for Add/Edit Events and Clubs -->
+    <!-- Add Event Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="eventModalTitle">Add New Event</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="eventForm">
+              <input type="hidden" id="eventIndex" value="" />
+              <div class="mb-3">
+                <label for="eventTitle" class="form-label">Event Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventTitle"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventClub" class="form-label">Club Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventClub"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventDate" class="form-label">Date</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventDate"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventTime" class="form-label">Time</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventTime"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventLocation" class="form-label">Location</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventLocation"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="eventDescription"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="eventStatus" class="form-label">Status</label>
+                <select class="form-select" id="eventStatus" required>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="ongoing">Ongoing</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveEvent()">
+              Save Event
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Club Modal -->
+    <div class="modal fade" id="clubModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clubModalTitle">Add New Club</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="clubForm">
+              <input type="hidden" id="clubIndex" value="" />
+              <div class="mb-3">
+                <label for="clubName" class="form-label">Club Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="clubName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="clubDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="clubDescription"
+                  rows="2"
+                  required
+                ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="clubPresident" class="form-label"
+                    >President</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubPresident"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="clubMembers" class="form-label"
+                    >Members Count</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="clubMembers"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="clubCategory" class="form-label">Category</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubCategory"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="clubFounded" class="form-label"
+                    >Founded Year</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubFounded"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="clubFocusArea" class="form-label">Focus Area</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="clubFocusArea"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveClub()">
+              Save Club
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Club Joining Modal (for Student Dashboard) -->
+    <div class="modal fade" id="joinClubModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">
+              <i class="bi bi-person-plus me-2"></i>Join a Club
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="joinClubForm">
+              <div class="mb-3">
+                <label for="studentName" class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="studentName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="rollNumber" class="form-label">Roll Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="rollNumber"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="branch" class="form-label">Branch</label>
+                <select class="form-select" id="branch" required>
+                  <option value="">Select Branch</option>
+                  <option value="Computer Engineering">
+                    Computer Engineering
+                  </option>
+                  <option
+                    value="Computer Science and Engineering (Data Science)"
+                  >
+                    Computer Science and Engineering (Data Science)
+                  </option>
+                  <option value="Artificial Intelligence and Data Science">
+                    Artificial Intelligence and Data Science
+                  </option>
+                  <option value="Artificial Intelligence and Machine Learning">
+                    Artificial Intelligence and Machine Learning
+                  </option>
+                  <option value="Information Technology">
+                    Information Technology
+                  </option>
+                  <option value="Electronics and Telecommunication Engineering">
+                    Electronics and Telecommunication Engineering
+                  </option>
+                  <option value="Mechanical Engineering">
+                    Mechanical Engineering
+                  </option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                  <option value="Electrical Engineering">
+                    Electrical Engineering
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="prnNumber" class="form-label">PRN Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="prnNumber"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="clubToJoin" class="form-label">Select Club</label>
+                <select
+                  class="form-select"
+                  id="clubToJoin"
+                  required
+                  onchange="updateClubFees()"
+                >
+                  <option value="">Choose a club...</option>
+                  <!-- Will be populated dynamically -->
+                </select>
+              </div>
+
+              <!-- Membership Fee Display -->
+              <div id="feesSection" class="alert alert-info d-none">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <i class="bi bi-credit-card me-2"></i>
+                    <strong>Membership Fee:</strong>
+                  </div>
+                  <div>
+                    <h5 class="mb-0 text-primary">
+                      ₹<span id="clubFees">0</span>
+                    </h5>
+                  </div>
+                </div>
+                <small class="text-muted d-block mt-2">
+                  <i class="bi bi-info-circle me-1"></i>
+                  One-time registration fee includes club materials and event
+                  access
+                </small>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="submitJoinClubForm()"
+            >
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Registration Modal -->
+    <div class="modal fade" id="eventRegistrationModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title">
+              <i class="bi bi-calendar-check me-2"></i>Register for Event
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="eventRegistrationForm">
+              <div class="mb-3">
+                <label for="eventRegStudentName" class="form-label"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventRegStudentName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventRegRollNumber" class="form-label"
+                  >Roll Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventRegRollNumber"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventRegBranch" class="form-label">Branch</label>
+                <select class="form-select" id="eventRegBranch" required>
+                  <option value="">Select Branch</option>
+                  <option value="Computer Engineering">
+                    Computer Engineering
+                  </option>
+                  <option
+                    value="Computer Science and Engineering (Data Science)"
+                  >
+                    Computer Science and Engineering (Data Science)
+                  </option>
+                  <option value="Artificial Intelligence and Data Science">
+                    Artificial Intelligence and Data Science
+                  </option>
+                  <option value="Artificial Intelligence and Machine Learning">
+                    Artificial Intelligence and Machine Learning
+                  </option>
+                  <option value="Information Technology">
+                    Information Technology
+                  </option>
+                  <option value="Electronics and Telecommunication Engineering">
+                    Electronics and Telecommunication Engineering
+                  </option>
+                  <option value="Mechanical Engineering">
+                    Mechanical Engineering
+                  </option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                  <option value="Electrical Engineering">
+                    Electrical Engineering
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="eventRegPrnNumber" class="form-label"
+                  >PRN Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventRegPrnNumber"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="eventRegEventName" class="form-label"
+                  >Event Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventRegEventName"
+                  readonly
+                  style="background-color: #f0f0f0"
+                />
+              </div>
+
+              <!-- Event Registration Fee Display -->
+              <div class="alert alert-info">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <i class="bi bi-credit-card me-2"></i>
+                    <strong>Registration Fee:</strong>
+                  </div>
+                  <div>
+                    <h5 class="mb-0 text-success">
+                      ₹<span id="eventRegFee">100</span>
+                    </h5>
+                  </div>
+                </div>
+                <small class="text-muted d-block mt-2">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Registration fee includes event materials and refreshments
+                </small>
+              </div>
+
+              <!-- Payment Method Selection -->
+              <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="eventPaymentMethod"
+                    id="eventPaymentUPI"
+                    value="upi"
+                    checked
+                  />
+                  <label class="form-check-label" for="eventPaymentUPI">
+                    <i class="bi bi-phone text-primary me-2"></i>UPI Payment
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="eventPaymentMethod"
+                    id="eventPaymentCard"
+                    value="card"
+                  />
+                  <label class="form-check-label" for="eventPaymentCard">
+                    <i class="bi bi-credit-card text-info me-2"></i>Credit /
+                    Debit Card
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="eventPaymentMethod"
+                    id="eventPaymentNetBanking"
+                    value="netbanking"
+                  />
+                  <label class="form-check-label" for="eventPaymentNetBanking">
+                    <i class="bi bi-bank text-warning me-2"></i>Net Banking
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="submitEventRegistration()"
+            >
+              <i class="bi bi-lock-fill me-2"></i>Pay & Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Gateway Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title">
+              <i class="bi bi-shield-check me-2"></i>Secure Payment Gateway
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Payment Details -->
+            <div class="payment-summary mb-4">
+              <div class="card bg-light">
+                <div class="card-body">
+                  <h6 class="card-title text-muted mb-3">Payment Summary</h6>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Club:</span>
+                    <strong id="paymentClubName">-</strong>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Student:</span>
+                    <strong id="paymentStudentName">-</strong>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Roll Number:</span>
+                    <strong id="paymentRollNumber">-</strong>
+                  </div>
+                  <hr />
+                  <div class="d-flex justify-content-between">
+                    <strong>Total Amount:</strong>
+                    <h4 class="text-success mb-0">
+                      ₹<span id="paymentAmount">0</span>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="mb-4">
+              <h6 class="mb-3">Select Payment Method</h6>
+              <div class="payment-methods">
+                <div class="form-check payment-option mb-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="upiPayment"
+                    value="upi"
+                    checked
+                  />
+                  <label class="form-check-label w-100" for="upiPayment">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-phone text-primary fs-4 me-3"></i>
+                      <div>
+                        <strong>UPI Payment</strong>
+                        <div class="text-muted small">
+                          Google Pay, PhonePe, Paytm
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="form-check payment-option mb-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="cardPayment"
+                    value="card"
+                  />
+                  <label class="form-check-label w-100" for="cardPayment">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-credit-card text-info fs-4 me-3"></i>
+                      <div>
+                        <strong>Credit / Debit Card</strong>
+                        <div class="text-muted small">
+                          Visa, Mastercard, Rupay
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="form-check payment-option mb-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="netBanking"
+                    value="netbanking"
+                  />
+                  <label class="form-check-label w-100" for="netBanking">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-bank text-warning fs-4 me-3"></i>
+                      <div>
+                        <strong>Net Banking</strong>
+                        <div class="text-muted small">
+                          All major banks supported
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Security Note -->
+            <div class="alert alert-success border-success">
+              <i class="bi bi-shield-lock-fill me-2"></i>
+              <small>Your payment is secured with 256-bit SSL encryption</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="processPayment()"
+            >
+              <i class="bi bi-lock-fill me-2"></i>Pay Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div
+      class="modal fade"
+      id="processingModal"
+      tabindex="-1"
+      data-bs-backdrop="static"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-body text-center py-5">
+            <div
+              class="spinner-border text-primary mb-3"
+              role="status"
+              style="width: 3rem; height: 3rem"
+            >
+              <span class="visually-hidden">Processing...</span>
+            </div>
+            <h5>Processing Payment...</h5>
+            <p class="text-muted mb-0">Please wait</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center py-5">
+            <div class="success-animation mb-4">
+              <i
+                class="bi bi-check-circle-fill text-success"
+                style="font-size: 5rem"
+              ></i>
+            </div>
+            <h3 class="text-success mb-3">Payment Successful!</h3>
+            <p class="text-muted mb-4">
+              Your club membership has been confirmed.
+              <br />
+              A confirmation email has been sent to your registered email
+              address.
+            </p>
+            <div class="transaction-details bg-light p-3 rounded mb-4">
+              <small class="text-muted">Transaction ID:</small>
+              <div class="fw-bold" id="transactionId">TXN20251013XXXXX</div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              onclick="closeAllModals()"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="index.js"></script>
+  </body>
+</html>
