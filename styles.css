@@ -162,10 +162,19 @@ body {
 }
 
 /* Navigation Bar Enhancements */
-.navbar {
+/* Student Dashboard Navbar - Light */
+.navbar:not(.navbar-dark) {
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.95) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Admin Dashboard Navbar - Dark */
+.navbar-dark {
+  backdrop-filter: blur(20px);
+  background: rgba(26, 32, 44, 0.98) !important;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.2);
   transition: all 0.3s ease;
 }
 
