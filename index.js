@@ -1642,12 +1642,12 @@ function createEnhancedClubCard(club, index) {
           <div class="d-grid gap-2">
             <button class="btn btn-outline-${
               club.color
-            } btn-sm" onclick="showClubDetails('${club.name}')">
+            } btn-sm" onclick='showClubDetails(${JSON.stringify(club.name)})'>
               <i class="bi bi-info-circle me-1"></i>View Full Details
             </button>
             <button class="btn btn-${
               club.color
-            } btn-sm shadow-sm" onclick="openJoinClubModal('${club.name}')">
+            } btn-sm shadow-sm" onclick='openJoinClubModal(${JSON.stringify(club.name)})'>
               <i class="bi bi-person-plus me-1"></i>Join This Club
             </button>
           </div>
