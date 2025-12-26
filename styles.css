@@ -195,11 +195,12 @@ body {
 
 .nav-link-custom {
   position: relative;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
   padding: 8px 16px !important;
   border-radius: 8px;
-  color: #333 !important;
+  color: #2d3748 !important;
+  font-size: 1rem;
 }
 
 .nav-link-custom::before {
@@ -221,6 +222,33 @@ body {
 
 .nav-link-custom:hover::before {
   width: 80%;
+}
+
+/* Logout Button Styling */
+#logoutBtn {
+  font-weight: 600;
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #dc3545;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+#adminLogoutBtn {
+  font-weight: 600;
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+#adminLogoutBtn:hover {
+  background-color: #ffc107;
+  color: #1a202c !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
 }
 
 /* Hero Section with Floating Elements */
@@ -784,8 +812,10 @@ html {
 
 /* Admin Navbar */
 .navbar-dark .nav-link {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: #ffffff !important;
   transition: color 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .navbar-dark .nav-link:hover {
