@@ -1626,18 +1626,31 @@ function createEnhancedClubCard(club, index) {
         </div>
         
         <!-- Meeting Info & Action -->
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="text-center">
-            <small class="text-muted d-block">Founded ${club.founded}</small>
-            <small class="text-${club.color}">${club.meetingDay}s ${
+        <div class="border-top pt-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="text-center">
+              <small class="text-muted d-block">Founded ${club.founded}</small>
+              <small class="text-${club.color} fw-bold">${club.meetingDay}s ${
     club.meetingTime
   }</small>
+            </div>
+            <div class="text-center">
+              <small class="text-muted d-block">President</small>
+              <small class="text-dark fw-bold">${club.president}</small>
+            </div>
           </div>
-          <button class="btn btn-${
-            club.color
-          } btn-sm px-3 shadow-sm" onclick="showClubDetails('${club.name}')">
-            <i class="bi bi-people me-1"></i>Join Club
-          </button>
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-${
+              club.color
+            } btn-sm" onclick="showClubDetails('${club.name}')">
+              <i class="bi bi-info-circle me-1"></i>View Full Details
+            </button>
+            <button class="btn btn-${
+              club.color
+            } btn-sm shadow-sm" onclick="openJoinClubModal('${club.name}')">
+              <i class="bi bi-person-plus me-1"></i>Join This Club
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1708,6 +1721,22 @@ function showClubDetails(clubName) {
   alert(
     `Club: ${club.name}\n\nFocus Area: ${club.focusArea}\n\nPresident: ${club.president}\nMembers: ${club.members}\nFounded: ${club.founded}\n\nDescription: ${club.description}\n\nKey Activities:\n• ${activitiesText}\n\nKey Outcomes:\n• ${outcomesText}\n\nMeeting: ${club.meetingDay}s at ${club.meetingTime}\nLocation: ${club.location}`
   );
+}
+
+// Open Join Club Modal with pre-selected club
+function openJoinClubModal(clubName = null) {
+  // Pre-select the club if provided
+  if (clubName) {
+    const clubSelect = document.getElementById("clubToJoin");
+    if (clubSelect) {
+      clubSelect.value = clubName;
+      updateClubFees(); // Update fees display if applicable
+    }
+  }
+
+  // Show the modal
+  const modal = new bootstrap.Modal(document.getElementById("joinClubModal"));
+  modal.show();
 }
 
 function showMemberDetails(memberId) {
