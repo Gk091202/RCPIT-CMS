@@ -1061,22 +1061,26 @@ function editClub(index) {
   const club = clubsData[index];
   document.getElementById("clubModalTitle").textContent = "Edit Club";
   document.getElementById("clubIndex").value = index;
-  document.getElementById("clubName").value = club.name;
-  document.getElementById("clubDescription").value = club.description;
-  document.getElementById("clubPresident").value = club.president;
-  document.getElementById("clubMembers").value = club.members;
-  document.getElementById("clubCategory").value = club.category;
-  document.getElementById("clubFounded").value = club.founded;
-  document.getElementById("clubFocusArea").value = club.focusArea;
-  document.getElementById("clubActivities").value = club.activities
-    ? club.activities.join(", ")
-    : "";
-  document.getElementById("clubOutcomes").value = club.outcomes
-    ? club.outcomes.join(", ")
-    : "";
+  document.getElementById("clubName").value = club.name || "";
+  document.getElementById("clubDescription").value = club.description || "";
+  document.getElementById("clubPresident").value = club.president || "";
+  document.getElementById("clubMembers").value = club.members || 0;
+  document.getElementById("clubCategory").value = club.category || "";
+  document.getElementById("clubFounded").value = club.founded || "";
+  document.getElementById("clubFocusArea").value = club.focusArea || "";
+
+  // Handle activities - ensure it's always an array
+  const activities = Array.isArray(club.activities) ? club.activities : [];
+  document.getElementById("clubActivities").value = activities.join(", ");
+
+  // Handle outcomes - ensure it's always an array
+  const outcomes = Array.isArray(club.outcomes) ? club.outcomes : [];
+  document.getElementById("clubOutcomes").value = outcomes.join(", ");
+
   document.getElementById("clubMeetingDay").value = club.meetingDay || "";
   document.getElementById("clubMeetingTime").value = club.meetingTime || "";
   document.getElementById("clubLocation").value = club.location || "";
+
   new bootstrap.Modal(document.getElementById("clubModal")).show();
 }
 
@@ -1084,31 +1088,29 @@ function saveClub() {
   const index = document.getElementById("clubIndex").value;
 
   // Parse activities and outcomes from comma-separated values
-  const activitiesInput = document.getElementById("clubActivities").value;
-  const outcomesInput = document.getElementById("clubOutcomes").value;
+  const activitiesInput = document.getElementById("clubActivities").value.trim();
+  const outcomesInput = document.getElementById("clubOutcomes").value.trim();
 
   const club = {
-    name: document.getElementById("clubName").value,
-    description: document.getElementById("clubDescription").value,
-    president: document.getElementById("clubPresident").value,
-    members: parseInt(document.getElementById("clubMembers").value),
-    category: document.getElementById("clubCategory").value,
-    founded: document.getElementById("clubFounded").value,
-    focusArea: document.getElementById("clubFocusArea").value,
+    name: document.getElementById("clubName").value.trim(),
+    description: document.getElementById("clubDescription").value.trim(),
+    president: document.getElementById("clubPresident").value.trim(),
+    members: parseInt(document.getElementById("clubMembers").value) || 0,
+    category: document.getElementById("clubCategory").value.trim(),
+    founded: document.getElementById("clubFounded").value.trim(),
+    focusArea: document.getElementById("clubFocusArea").value.trim(),
     activities: activitiesInput
-      .split(",")
-      .map((a) => a.trim())
-      .filter((a) => a),
+      ? activitiesInput.split(",").map((a) => a.trim()).filter((a) => a)
+      : [],
     outcomes: outcomesInput
-      .split(",")
-      .map((o) => o.trim())
-      .filter((o) => o),
-    meetingDay: document.getElementById("clubMeetingDay").value,
-    meetingTime: document.getElementById("clubMeetingTime").value,
-    location: document.getElementById("clubLocation").value,
+      ? outcomesInput.split(",").map((o) => o.trim()).filter((o) => o)
+      : [],
+    meetingDay: document.getElementById("clubMeetingDay").value.trim(),
+    meetingTime: document.getElementById("clubMeetingTime").value.trim(),
+    location: document.getElementById("clubLocation").value.trim(),
     icon: index !== "" ? clubsData[parseInt(index)].icon : "bi-people",
     color: index !== "" ? clubsData[parseInt(index)].color : "primary",
-    fees: index !== "" ? clubsData[parseInt(index)].fees : 300,
+    fees: index !== "" ? (clubsData[parseInt(index)].fees || 300) : 300,
   };
 
   const isUpdate = index !== "";
@@ -1128,8 +1130,9 @@ function saveClub() {
       loadAdminClubs();
       populateClubDropdown();
       bootstrap.Modal.getInstance(document.getElementById("clubModal")).hide();
+      document.getElementById("clubForm").reset();
       alert(
-        "Club saved successfully! Changes will appear on student dashboard."
+        "Club saved successfully! Changes will appear on student dashboard after refresh."
       );
     })
     .catch((error) => {
@@ -1605,19 +1608,21 @@ function createEnhancedClubCard(club, index) {
             <i class="bi bi-lightning me-2"></i>Key Activities
           </h6>
           <div class="d-flex flex-wrap gap-1">
-            ${club.activities
-              .slice(0, 3)
-              .map(
-                (activity) =>
-                  `<span class="badge bg-${club.color} bg-opacity-10 text-${club.color} small px-2 py-1">${activity}</span>`
-              )
-              .join("")}
             ${
-              club.activities.length > 3
-                ? `<span class="badge bg-secondary bg-opacity-10 text-secondary small px-2 py-1">+${
-                    club.activities.length - 3
-                  } more</span>`
-                : ""
+              Array.isArray(club.activities) && club.activities.length > 0
+                ? club.activities
+                    .slice(0, 3)
+                    .map(
+                      (activity) =>
+                        `<span class="badge bg-${club.color} bg-opacity-10 text-${club.color} small px-2 py-1">${activity}</span>`
+                    )
+                    .join("") +
+                  (club.activities.length > 3
+                    ? `<span class="badge bg-secondary bg-opacity-10 text-secondary small px-2 py-1">+${
+                        club.activities.length - 3
+                      } more</span>`
+                    : "")
+                : '<span class="text-muted small">No activities listed</span>'
             }
           </div>
         </div>
@@ -1628,25 +1633,27 @@ function createEnhancedClubCard(club, index) {
             <i class="bi bi-trophy me-2"></i>Key Outcomes
           </h6>
           <div class="outcomes-list">
-            ${club.outcomes
-              .slice(0, 3)
-              .map(
-                (outcome) =>
-                  `<div class="d-flex align-items-center mb-1">
+            ${
+              Array.isArray(club.outcomes) && club.outcomes.length > 0
+                ? club.outcomes
+                    .slice(0, 3)
+                    .map(
+                      (outcome) =>
+                        `<div class="d-flex align-items-center mb-1">
                 <i class="bi bi-check-circle-fill text-success me-2" style="font-size: 0.8rem;"></i>
                 <small class="text-muted">${outcome}</small>
               </div>`
-              )
-              .join("")}
-            ${
-              club.outcomes.length > 3
-                ? `<div class="d-flex align-items-center mb-1">
+                    )
+                    .join("") +
+                  (club.outcomes.length > 3
+                    ? `<div class="d-flex align-items-center mb-1">
                 <i class="bi bi-plus-circle text-secondary me-2" style="font-size: 0.8rem;"></i>
                 <small class="text-secondary">${
                   club.outcomes.length - 3
                 } more achievements</small>
               </div>`
-                : ""
+                    : "")
+                : '<div class="text-muted small">No outcomes listed</div>'
             }
           </div>
         </div>
