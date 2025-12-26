@@ -1509,9 +1509,13 @@ function loadClubsWithAnimation() {
 
   clubsData.forEach((club, index) => {
     setTimeout(() => {
-      console.log(`🏫 Creating club card ${index + 1}:`, club.name);
-      const clubCard = createEnhancedClubCard(club, index);
-      clubsContainer.appendChild(clubCard);
+      try {
+        console.log(`🏫 Creating club card ${index + 1}:`, club.name);
+        const clubCard = createEnhancedClubCard(club, index);
+        clubsContainer.appendChild(clubCard);
+      } catch (error) {
+        console.error(`Error creating club card for ${club.name}:`, error);
+      }
     }, index * 200);
   });
 }
@@ -1579,19 +1583,19 @@ function createEnhancedClubCard(club, index) {
 
   colDiv.innerHTML = `
     <div class="card h-100 shadow-lg border-0" style="border-left: 5px solid var(--bs-${
-      club.color
+      club.color || 'primary'
     }) !important; border-radius: 15px;">
       <div class="card-header bg-${
-        club.color
+        club.color || 'primary'
       } text-white" style="border-radius: 15px 15px 0 0;">
         <div class="d-flex align-items-center">
           <div class="me-3">
-            <i class="${club.icon}" style="font-size: 2.5rem;"></i>
+            <i class="${club.icon || 'bi-people'}" style="font-size: 2.5rem;"></i>
           </div>
           <div>
-            <h5 class="card-title mb-1 fw-bold">${club.name}</h5>
-            <small class="text-white-50">${club.category} • ${
-    club.members
+            <h5 class="card-title mb-1 fw-bold">${club.name || 'Unnamed Club'}</h5>
+            <small class="text-white-50">${club.category || 'General'} • ${
+    club.members || 0
   } Members</small>
           </div>
         </div>
@@ -1602,12 +1606,14 @@ function createEnhancedClubCard(club, index) {
           <h6 class="text-${club.color} fw-bold mb-2">
             <i class="bi bi-bullseye me-2"></i>Focus Area
           </h6>
-          <p class="text-muted small">${club.focusArea}</p>
+          <p class="text-muted small">${club.focusArea || "Not specified"}</p>
         </div>
         
         <!-- Description -->
         <div class="mb-3">
-          <p class="card-text text-dark">${club.description}</p>
+          <p class="card-text text-dark">${
+            club.description || "No description available"
+          }</p>
         </div>
         
         <!-- Activities -->
