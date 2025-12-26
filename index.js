@@ -1071,11 +1071,11 @@ function editClub(index) {
 
   // Handle activities - ensure it's always an array
   const activities = Array.isArray(club.activities) ? club.activities : [];
-  document.getElementById("clubActivities").value = activities.join(", ");
+  document.getElementById("clubActivities").value = activities.join(" $ ");
 
   // Handle outcomes - ensure it's always an array
   const outcomes = Array.isArray(club.outcomes) ? club.outcomes : [];
-  document.getElementById("clubOutcomes").value = outcomes.join(", ");
+  document.getElementById("clubOutcomes").value = outcomes.join(" $ ");
 
   document.getElementById("clubMeetingDay").value = club.meetingDay || "";
   document.getElementById("clubMeetingTime").value = club.meetingTime || "";
@@ -1087,8 +1087,10 @@ function editClub(index) {
 function saveClub() {
   const index = document.getElementById("clubIndex").value;
 
-  // Parse activities and outcomes from comma-separated values
-  const activitiesInput = document.getElementById("clubActivities").value.trim();
+  // Parse activities and outcomes from $ separated values
+  const activitiesInput = document
+    .getElementById("clubActivities")
+    .value.trim();
   const outcomesInput = document.getElementById("clubOutcomes").value.trim();
 
   const club = {
@@ -1100,17 +1102,23 @@ function saveClub() {
     founded: document.getElementById("clubFounded").value.trim(),
     focusArea: document.getElementById("clubFocusArea").value.trim(),
     activities: activitiesInput
-      ? activitiesInput.split(",").map((a) => a.trim()).filter((a) => a)
+      ? activitiesInput
+          .split("$")
+          .map((a) => a.trim())
+          .filter((a) => a)
       : [],
     outcomes: outcomesInput
-      ? outcomesInput.split(",").map((o) => o.trim()).filter((o) => o)
+      ? outcomesInput
+          .split("$")
+          .map((o) => o.trim())
+          .filter((o) => o)
       : [],
     meetingDay: document.getElementById("clubMeetingDay").value.trim(),
     meetingTime: document.getElementById("clubMeetingTime").value.trim(),
     location: document.getElementById("clubLocation").value.trim(),
     icon: index !== "" ? clubsData[parseInt(index)].icon : "bi-people",
     color: index !== "" ? clubsData[parseInt(index)].color : "primary",
-    fees: index !== "" ? (clubsData[parseInt(index)].fees || 300) : 300,
+    fees: index !== "" ? clubsData[parseInt(index)].fees || 300 : 300,
   };
 
   const isUpdate = index !== "";
