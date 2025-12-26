@@ -1581,21 +1581,38 @@ function createEnhancedClubCard(club, index) {
   const colDiv = document.createElement("div");
   colDiv.className = "col-lg-4 col-md-6 mb-4";
 
+  // Ensure all required properties have fallback values
+  const safeClub = {
+    color: club.color || "primary",
+    icon: club.icon || "bi-people",
+    name: club.name || "Unnamed Club",
+    category: club.category || "General",
+    members: club.members || 0,
+    focusArea: club.focusArea || "Not specified",
+    description: club.description || "No description available",
+    activities: Array.isArray(club.activities) ? club.activities : [],
+    outcomes: Array.isArray(club.outcomes) ? club.outcomes : [],
+    founded: club.founded || "N/A",
+    meetingDay: club.meetingDay || "",
+    meetingTime: club.meetingTime || "",
+    president: club.president || "TBD",
+  };
+
   colDiv.innerHTML = `
     <div class="card h-100 shadow-lg border-0" style="border-left: 5px solid var(--bs-${
-      club.color || 'primary'
+      safeClub.color
     }) !important; border-radius: 15px;">
       <div class="card-header bg-${
-        club.color || 'primary'
+        safeClub.color
       } text-white" style="border-radius: 15px 15px 0 0;">
         <div class="d-flex align-items-center">
           <div class="me-3">
-            <i class="${club.icon || 'bi-people'}" style="font-size: 2.5rem;"></i>
+            <i class="${safeClub.icon}" style="font-size: 2.5rem;"></i>
           </div>
           <div>
-            <h5 class="card-title mb-1 fw-bold">${club.name || 'Unnamed Club'}</h5>
-            <small class="text-white-50">${club.category || 'General'} • ${
-    club.members || 0
+            <h5 class="card-title mb-1 fw-bold">${safeClub.name}</h5>
+            <small class="text-white-50">${safeClub.category} • ${
+    safeClub.members
   } Members</small>
           </div>
         </div>
@@ -1603,37 +1620,35 @@ function createEnhancedClubCard(club, index) {
       <div class="card-body p-4">
         <!-- Focus Area -->
         <div class="mb-3">
-          <h6 class="text-${club.color} fw-bold mb-2">
+          <h6 class="text-${safeClub.color} fw-bold mb-2">
             <i class="bi bi-bullseye me-2"></i>Focus Area
           </h6>
-          <p class="text-muted small">${club.focusArea || "Not specified"}</p>
+          <p class="text-muted small">${safeClub.focusArea}</p>
         </div>
         
         <!-- Description -->
         <div class="mb-3">
-          <p class="card-text text-dark">${
-            club.description || "No description available"
-          }</p>
+          <p class="card-text text-dark">${safeClub.description}</p>
         </div>
         
         <!-- Activities -->
         <div class="mb-3">
-          <h6 class="text-${club.color} fw-bold mb-2">
+          <h6 class="text-${safeClub.color} fw-bold mb-2">
             <i class="bi bi-lightning me-2"></i>Key Activities
           </h6>
           <div class="d-flex flex-wrap gap-1">
             ${
-              Array.isArray(club.activities) && club.activities.length > 0
-                ? club.activities
+              safeClub.activities.length > 0
+                ? safeClub.activities
                     .slice(0, 3)
                     .map(
                       (activity) =>
-                        `<span class="badge bg-${club.color} bg-opacity-10 text-${club.color} small px-2 py-1">${activity}</span>`
+                        `<span class="badge bg-${safeClub.color} bg-opacity-10 text-${safeClub.color} small px-2 py-1">${activity}</span>`
                     )
                     .join("") +
-                  (club.activities.length > 3
+                  (safeClub.activities.length > 3
                     ? `<span class="badge bg-secondary bg-opacity-10 text-secondary small px-2 py-1">+${
-                        club.activities.length - 3
+                        safeClub.activities.length - 3
                       } more</span>`
                     : "")
                 : '<span class="text-muted small">No activities listed</span>'
@@ -1643,13 +1658,13 @@ function createEnhancedClubCard(club, index) {
         
         <!-- Key Outcomes -->
         <div class="mb-4">
-          <h6 class="text-${club.color} fw-bold mb-2">
+          <h6 class="text-${safeClub.color} fw-bold mb-2">
             <i class="bi bi-trophy me-2"></i>Key Outcomes
           </h6>
           <div class="outcomes-list">
             ${
-              Array.isArray(club.outcomes) && club.outcomes.length > 0
-                ? club.outcomes
+              safeClub.outcomes.length > 0
+                ? safeClub.outcomes
                     .slice(0, 3)
                     .map(
                       (outcome) =>
@@ -1659,11 +1674,11 @@ function createEnhancedClubCard(club, index) {
               </div>`
                     )
                     .join("") +
-                  (club.outcomes.length > 3
+                  (safeClub.outcomes.length > 3
                     ? `<div class="d-flex align-items-center mb-1">
                 <i class="bi bi-plus-circle text-secondary me-2" style="font-size: 0.8rem;"></i>
                 <small class="text-secondary">${
-                  club.outcomes.length - 3
+                  safeClub.outcomes.length - 3
                 } more achievements</small>
               </div>`
                     : "")
@@ -1677,29 +1692,27 @@ function createEnhancedClubCard(club, index) {
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="text-center">
               <small class="text-muted d-block">Founded ${
-                club.founded || "N/A"
+                safeClub.founded
               }</small>
-              <small class="text-${club.color} fw-bold">${
-    club.meetingDay && club.meetingTime
-      ? `${club.meetingDay}s at ${club.meetingTime}`
+              <small class="text-${safeClub.color} fw-bold">${
+    safeClub.meetingDay && safeClub.meetingTime
+      ? `${safeClub.meetingDay}s at ${safeClub.meetingTime}`
       : "TBD"
   }</small>
             </div>
             <div class="text-center">
               <small class="text-muted d-block">President</small>
-              <small class="text-dark fw-bold">${
-                club.president || "TBD"
-              }</small>
+              <small class="text-dark fw-bold">${safeClub.president}</small>
             </div>
           </div>
           <div class="d-grid gap-2">
             <button class="btn btn-outline-${
-              club.color
+              safeClub.color
             } btn-sm" onclick='showClubDetails(${JSON.stringify(club.name)})'>
               <i class="bi bi-info-circle me-1"></i>View Full Details
             </button>
             <button class="btn btn-${
-              club.color
+              safeClub.color
             } btn-sm shadow-sm" onclick='openJoinClubModal(${JSON.stringify(
     club.name
   )})'>
