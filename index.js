@@ -1068,11 +1068,25 @@ function editClub(index) {
   document.getElementById("clubCategory").value = club.category;
   document.getElementById("clubFounded").value = club.founded;
   document.getElementById("clubFocusArea").value = club.focusArea;
+  document.getElementById("clubActivities").value = club.activities
+    ? club.activities.join(", ")
+    : "";
+  document.getElementById("clubOutcomes").value = club.outcomes
+    ? club.outcomes.join(", ")
+    : "";
+  document.getElementById("clubMeetingDay").value = club.meetingDay || "";
+  document.getElementById("clubMeetingTime").value = club.meetingTime || "";
+  document.getElementById("clubLocation").value = club.location || "";
   new bootstrap.Modal(document.getElementById("clubModal")).show();
 }
 
 function saveClub() {
   const index = document.getElementById("clubIndex").value;
+
+  // Parse activities and outcomes from comma-separated values
+  const activitiesInput = document.getElementById("clubActivities").value;
+  const outcomesInput = document.getElementById("clubOutcomes").value;
+
   const club = {
     name: document.getElementById("clubName").value,
     description: document.getElementById("clubDescription").value,
@@ -1081,14 +1095,20 @@ function saveClub() {
     category: document.getElementById("clubCategory").value,
     founded: document.getElementById("clubFounded").value,
     focusArea: document.getElementById("clubFocusArea").value,
-    icon: "bi-people",
-    color: "primary",
-    activities: ["Member activities"],
-    outcomes: ["Key outcomes"],
-    meetingDay: "TBD",
-    meetingTime: "TBD",
-    location: "TBD",
-    fees: 300,
+    activities: activitiesInput
+      .split(",")
+      .map((a) => a.trim())
+      .filter((a) => a),
+    outcomes: outcomesInput
+      .split(",")
+      .map((o) => o.trim())
+      .filter((o) => o),
+    meetingDay: document.getElementById("clubMeetingDay").value,
+    meetingTime: document.getElementById("clubMeetingTime").value,
+    location: document.getElementById("clubLocation").value,
+    icon: index !== "" ? clubsData[parseInt(index)].icon : "bi-people",
+    color: index !== "" ? clubsData[parseInt(index)].color : "primary",
+    fees: index !== "" ? clubsData[parseInt(index)].fees : 300,
   };
 
   const isUpdate = index !== "";

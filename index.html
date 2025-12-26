@@ -334,7 +334,10 @@
                 data-aos="fade-left"
                 data-aos-delay="400"
               >
-                <button id="logoutBtn" class="btn btn-outline-danger btn-sm w-100">
+                <button
+                  id="logoutBtn"
+                  class="btn btn-outline-danger btn-sm w-100"
+                >
                   <i class="bi bi-box-arrow-right me-1"></i>Logout
                 </button>
               </li>
@@ -807,6 +810,66 @@
                   id="clubFocusArea"
                   required
                 />
+              </div>
+              <div class="mb-3">
+                <label for="clubActivities" class="form-label"
+                  >Key Activities (comma-separated)</label
+                >
+                <textarea
+                  class="form-control"
+                  id="clubActivities"
+                  rows="2"
+                  placeholder="e.g. Workshops, Hackathons, Meetups"
+                  required
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="clubOutcomes" class="form-label"
+                  >Key Outcomes (comma-separated)</label
+                >
+                <textarea
+                  class="form-control"
+                  id="clubOutcomes"
+                  rows="2"
+                  placeholder="e.g. Award Winner, 100+ Projects, Tech Talks"
+                  required
+                ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="clubMeetingDay" class="form-label"
+                    >Meeting Day</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubMeetingDay"
+                    placeholder="e.g. Friday"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="clubMeetingTime" class="form-label"
+                    >Meeting Time</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubMeetingTime"
+                    placeholder="e.g. 4:00 PM"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="clubLocation" class="form-label">Location</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clubLocation"
+                    placeholder="e.g. Room 301"
+                    required
+                  />
+                </div>
               </div>
             </form>
           </div>
