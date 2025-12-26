@@ -1,11 +1,11 @@
 // Enhanced College Club Management System JavaScript - Club Cards Enhanced
 // Data Management with Backend API
 
-// API Base URL - Change this after deploying to Railway
+// API Base URL - Backend deployed on Render
 const API_BASE_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:3000/api"
-    : "https://rcpit-cms-production.up.railway.app/api";
+    : "https://rcpit-cms.onrender.com/api";
 
 // Initialize data from backend
 let eventsData = [];
