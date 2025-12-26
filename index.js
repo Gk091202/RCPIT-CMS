@@ -1629,14 +1629,20 @@ function createEnhancedClubCard(club, index) {
         <div class="border-top pt-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="text-center">
-              <small class="text-muted d-block">Founded ${club.founded}</small>
-              <small class="text-${club.color} fw-bold">${club.meetingDay}s ${
-    club.meetingTime
+              <small class="text-muted d-block">Founded ${
+                club.founded || "N/A"
+              }</small>
+              <small class="text-${club.color} fw-bold">${
+    club.meetingDay && club.meetingTime
+      ? `${club.meetingDay}s at ${club.meetingTime}`
+      : "TBD"
   }</small>
             </div>
             <div class="text-center">
               <small class="text-muted d-block">President</small>
-              <small class="text-dark fw-bold">${club.president}</small>
+              <small class="text-dark fw-bold">${
+                club.president || "TBD"
+              }</small>
             </div>
           </div>
           <div class="d-grid gap-2">
@@ -1647,7 +1653,9 @@ function createEnhancedClubCard(club, index) {
             </button>
             <button class="btn btn-${
               club.color
-            } btn-sm shadow-sm" onclick='openJoinClubModal(${JSON.stringify(club.name)})'>
+            } btn-sm shadow-sm" onclick='openJoinClubModal(${JSON.stringify(
+    club.name
+  )})'>
               <i class="bi bi-person-plus me-1"></i>Join This Club
             </button>
           </div>
