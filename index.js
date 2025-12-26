@@ -609,11 +609,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   populateClubDropdown();
 });
 
-function showHomepage() {
+async function showHomepage() {
   console.log("🏠 showHomepage called");
   loginPage.classList.remove("active");
   adminDashboard.classList.remove("active");
   homepage.classList.add("active");
+
+  // Refresh data from backend to ensure latest content
+  await loadDataFromStorage();
 
   // Load all sections
   console.log("📅 Loading events data...");
@@ -632,11 +635,14 @@ function showHomepage() {
   }, 100);
 }
 
-function showAdminDashboard() {
+async function showAdminDashboard() {
   console.log("🔐 showAdminDashboard called");
   loginPage.classList.remove("active");
   homepage.classList.remove("active");
   adminDashboard.classList.add("active");
+
+  // Refresh data from backend to ensure latest content
+  await loadDataFromStorage();
 
   // Load admin sections
   loadAdminEvents();
