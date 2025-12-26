@@ -30,6 +30,10 @@ async function loadDataFromStorage() {
     const clubsResponse = await fetch(`${API_BASE_URL}/clubs`);
     if (clubsResponse.ok) {
       clubsData = await clubsResponse.json();
+      // If API returns empty, use default data
+      if (clubsData.length === 0) {
+        clubsData = getDefaultClubs();
+      }
     }
 
     // Load form submissions
